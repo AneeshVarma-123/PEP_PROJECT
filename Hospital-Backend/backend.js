@@ -1,25 +1,25 @@
-// Step 1: Import Dependencies
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-// Step 2: Initialize Express App
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+
 app.use(express.json());
 app.use(cors());
 
-// Step 3: Connect to MongoDB
+
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Step 4: Define Hospital Schema & Model
+
 
 
 const HospitalSchema = new mongoose.Schema({
@@ -32,13 +32,12 @@ const HospitalSchema = new mongoose.Schema({
 
 module.exports = mongoose.model("Hospital", HospitalSchema);
 
-// Step 5: API Routes
-// Home Route
+
 app.get("/", (req, res) => {
     res.send("Hospital Management System Backend Running!");
 });
 
-// Create Hospital
+
 app.post("api/v1/hospitals/create", async (req, res) => {
     try {
         const hospital = new Hospital(req.body);
@@ -49,7 +48,7 @@ app.post("api/v1/hospitals/create", async (req, res) => {
     }
 });
 
-// Search Hospitals by City
+
 app.get("/api/v1/hospitals", async (req, res) => {
     try {
         const { city } = req.query;
@@ -60,7 +59,7 @@ app.get("/api/v1/hospitals", async (req, res) => {
     }
 });
 
-// Get Hospital by ID
+
 app.get("/api/v1/hospitals/:id", async (req, res) => {
     try {
         const hospital = await Hospital.findById(req.params.id);
@@ -70,7 +69,7 @@ app.get("/api/v1/hospitals/:id", async (req, res) => {
     }
 });
 
-// Update Hospital
+
 app.put("/api/v1/hospitals/update", async (req, res) => {
     try {
         const { id } = req.query;
@@ -81,7 +80,6 @@ app.put("/api/v1/hospitals/update", async (req, res) => {
     }
 });
 
-// Delete Hospital
 app.delete("/api/v1/hospitals/delete", async (req, res) => {
     try {
         const { id } = req.query;
@@ -92,7 +90,7 @@ app.delete("/api/v1/hospitals/delete", async (req, res) => {
     }
 });
 
-// Step 6: Start Server
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
